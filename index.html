@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        input, button { 
+            padding: 10px; 
+            margin: 10px; 
+            font-size: 16px; 
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            font-weight: bold;
+            color: #333;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>AI Assistant</h2>
+        <p>Enter a name to get the telephone number.</p>
+        <input type="text" id="nameInput" placeholder="Enter Name">
+        <button onclick="fetchPhoneNumber()">Get Telephone</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function fetchPhoneNumber() {
+            var name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                alert("Please enter a name.");
+                return;
+            }
+
+            var apiUrl = "https://script.google.com/macros/s/AKfycbxqwSZfQfXrTe6W73jWegHXL6A-464TEbyxUf2uggV0hnrtk91OdCpebzmIgSIFqcUf9Q/exec" 
+                         + "?name=" + encodeURIComponent(name);
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "Not Found") {
+                        document.getElementById("result").innerHTML = `<span style="color:red;">No telephone number found for "${name}".</span>`;
+                    } else {
+                        document.getElementById("result").innerHTML = `<span style="color:green;">Telephone: ${data}</span>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("result").innerHTML = `<span style="color:red;">Error fetching data.</span>`;
+                });
+        }
+    </script>
+</body>
+</html>
